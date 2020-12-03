@@ -6,6 +6,7 @@ import IUsersRepository from '../repositories/IUserRepository';
 import IHashUser from '../hashPassword/model/IHashUser';
 
 interface IRequest {
+  name: string;
   cpf: string;
   password: string;
   deliveryman: boolean;
@@ -19,7 +20,7 @@ class CreateUserService {
     private hashUser: IHashUser
   ) {}
 
-  public async execute({cpf, password, deliveryman}: IRequest): Promise<User> {
+  public async execute({ name ,cpf, password, deliveryman}: IRequest): Promise<User> {
     const checkUserCpfExists = await this.userRepository.findByCpf(cpf);
 
     if (checkUserCpfExists) {
@@ -32,6 +33,7 @@ class CreateUserService {
       deliveryman = false;
     }
     const user = this.userRepository.create({
+      name,
       cpf,
       password: hashedPassword,
       deliveryman
