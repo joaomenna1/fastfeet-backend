@@ -13,6 +13,10 @@ export default class CreateUser1607004424411 implements MigrationInterface {
             generationStrategy: 'increment',
           },
           {
+            name: 'US_NAME',
+            type: 'varchar'
+          },
+          {
             name: 'US_CPF',
             type: 'varchar',
             isUnique: true,
