@@ -1,10 +1,10 @@
 import { getRepository, Repository, Not } from 'typeorm';
-import IUsersRepositories from '@modules/users/repositories/IUserRepository';
+import IUsersRepositories from '@modules/users/repositories/IUsersRepository';
 import ICreateUserDTO from '@modules/users/dtos/ICreateUserDTO';
 import User from '../entities/User';
 
 
-class UserRepository implements IUsersRepositories {
+class UsersRepository implements IUsersRepositories {
   private ormRepository: Repository<User>;
 
   constructor() {
@@ -17,17 +17,13 @@ class UserRepository implements IUsersRepositories {
     return user;
   }
 
-  public async findByCpf(cpf: string): Promise<User | undefined> {
+  public async findByCpf(cpf: number): Promise<User | undefined> {
     const user_cpf = await this.ormRepository.findOne(cpf);
 
     return user_cpf;
   }
 
   public async create(userData: ICreateUserDTO): Promise<User> {
-    if (userData.deliveryman === null) {
-      userData.deliveryman = false;
-    }
-
     const user = this.ormRepository.create(userData);
 
     await this.ormRepository.save(user);
@@ -38,8 +34,6 @@ class UserRepository implements IUsersRepositories {
   public async save(user: User): Promise<User> {
     return this.ormRepository.save(user);
   }
-
-
 }
 
-export default UserRepository;
+export default UsersRepository;

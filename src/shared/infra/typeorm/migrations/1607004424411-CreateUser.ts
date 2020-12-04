@@ -8,9 +8,10 @@ export default class CreateUser1607004424411 implements MigrationInterface {
         columns: [
           {
             name: 'US_ID',
-            type: 'int',
+            type: 'integer',
             isPrimary: true,
             generationStrategy: 'increment',
+            isGenerated: true,
           },
           {
             name: 'US_NAME',
@@ -18,8 +19,7 @@ export default class CreateUser1607004424411 implements MigrationInterface {
           },
           {
             name: 'US_CPF',
-            type: 'varchar',
-            isUnique: true,
+            type: 'int',
           },
           {
             name: 'US_PASSWORD',
@@ -28,6 +28,7 @@ export default class CreateUser1607004424411 implements MigrationInterface {
           {
             name: 'US_DELIVERYMAN',
             type: 'boolean',
+            default: false,
           },
           {
             name: 'created_at',

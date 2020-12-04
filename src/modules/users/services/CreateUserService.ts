@@ -2,18 +2,19 @@ import { inject, injectable } from "tsyringe";
 
 import User from '@modules/users/infra/typeorm/entities/User';
 import AppError from '@shared/errors/AppError';
-import IUsersRepository from '../repositories/IUserRepository';
+import IUsersRepository from '../repositories/IUsersRepository';
 import IHashUser from '../hashPassword/model/IHashUser';
 
 interface IRequest {
   name: string;
-  cpf: string;
+  cpf: number;
   password: string;
   deliveryman: boolean;
 }
+@injectable()
 class CreateUserService {
   constructor(
-    @inject('UserRepository')
+    @inject('UsersRepository')
     private userRepository: IUsersRepository,
 
     @inject('HashUser')
@@ -22,16 +23,13 @@ class CreateUserService {
 
   public async execute({ name ,cpf, password, deliveryman}: IRequest): Promise<User> {
     const checkUserCpfExists = await this.userRepository.findByCpf(cpf);
-
+    console.log(checkUserCpfExists);
     if (checkUserCpfExists) {
       throw new AppError('Cpf already user.');
     }
 
     const hashedPassword = await this.hashUser.generateHash(password);
 
-    if (deliveryman === undefined) {
-      deliveryman = false;
-    }
     const user = this.userRepository.create({
       name,
       cpf,
